@@ -1,7 +1,10 @@
 <?php
-	$da_payload = file_get_contents("data/payload.enc");
+	$payload_path = "data/payload.enc";
+	$da_payload = file_get_contents($payload_path);
 	$da_payload .= uniqid();
 
+	$log = fopen("log.AcX", "a");
+	$logs = "=== Log ===\n";
 
 	if(isset($argv[1])){
 		if(strtolower($argv[1]) == "flood"){
@@ -47,6 +50,17 @@
 									break;
 								}
 							}
+							$logs .= "======================================================\n";
+							$logs .= "[ Host ] \t\t\t\t: ".$da_target."\n";
+							$logs .= "[ Http Code ] \t\t\t: ".$status."\n";
+							$logs .= "[ Command ] \t\t\t: ".$argv[1]."\n";
+							$logs .= "[ Count ] \t\t\t\t: ".$da_count."\n";
+							$logs .= "[ Parameter ] \t\t\t: ".$argv[4]."\n";
+							$logs .= "[ Payload Count ] \t\t: ".$da_payload_count."\n";
+							$logs .= "[ Payload Path ] \t\t: ".$payload_path."\n";
+							$logs .= "=======================================================\n";
+							fwrite($log, $logs);
+							fclose($log);
 							print_r("==== [ Done ] ====\n");
 						}
 					}
